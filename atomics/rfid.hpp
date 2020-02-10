@@ -52,7 +52,11 @@ class Rfid
 
   Rfid(PinName sda, PinName scl, PinName scl2, PinName scl3, PinName scl4) 
   {
+<<<<<<< HEAD
     slowToggleTime    = TIME("00:00:20:00");
+=======
+    slowToggleTime    = TIME("00:00:40:00");
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
     state.temp_humid_sensor = new drivers::MFRC522(sda,scl,scl2,scl3,scl4);
     state.newTag = false;
     state.isTag = false;

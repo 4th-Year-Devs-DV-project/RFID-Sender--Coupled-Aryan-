@@ -43,6 +43,7 @@ using namespace std;
         public:
             //Parameters to be overwriten when instantiating the atomic model
             TIME   slowToggleTime;
+<<<<<<< HEAD
             TIME   fastToggleTime;
             // default constructor
             transmitter(PinName s, PinName t, PinName q, PinName w, PinName r, PinName a) {
@@ -52,6 +53,13 @@ using namespace std;
               state.newTag = false;
               state.isCard = false;
               state.flag = 0;
+=======
+            // default constructor
+            transmitter(PinName s, PinName t, PinName q, PinName w, PinName r, PinName a) {
+              slowToggleTime  = TIME("00:00:50:00");
+              state.temp = new nRF24L01P(s,t,q,w,r,a);
+              state.newTag = false;
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
             }
 
             // state definition
@@ -59,8 +67,11 @@ using namespace std;
               char s[32] =  " Car 1  says hi ";
               nRF24L01P* temp;
               bool newTag;
+<<<<<<< HEAD
               bool isCard;
               int flag;
+=======
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
             };
             state_type state;
             // ports definition
@@ -73,6 +84,7 @@ using namespace std;
 
             // internal transition
             void internal_transition() {
+<<<<<<< HEAD
               printf( "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
               if (t = 0 ){
                 state.temp->powerUp(); // power up antenna
@@ -93,6 +105,14 @@ using namespace std;
 
                 
               
+=======
+              printf( "every other run");
+              if (t = 0 ){
+                state.temp->powerUp(); // power up antenna
+                t= t+1 ;
+                printf( "Firstrun");
+              }
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
 
 
 
@@ -116,18 +136,31 @@ using namespace std;
                 
                 if(x == 0 )
                   break;
+<<<<<<< HEAD
 
                 state.newTag = true;
                 state.flag = 1;
+=======
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
                 if(x == 123)
                   state.s[0] = '1';
                 else
                   state.s[0] = '0';
 
+<<<<<<< HEAD
                 printf("newtag: %d\n", state.newTag );
                 printf("flag:  %d\n", state.flag );  
 
                 
+=======
+                state.temp->setTransferSize(32);
+                state.temp->setTransmitMode();
+                state.temp->enable(); // enable ce pin
+                state.temp->write(1, state.s,32); // writing hello world
+	              printf("%i \n",sizeof(state.s));
+                printf( "Sending data:%s \n",state.s);
+                state.temp->disable();
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
               }
 
               
@@ -142,6 +175,7 @@ using namespace std;
             // output function
             typename make_message_bags<output_ports>::type output() const {
               typename make_message_bags<output_ports>::type bags;
+<<<<<<< HEAD
               printf("newTAg in msg: %d\n", state.newTag );
 
               if(state.newTag == 1)
@@ -156,6 +190,8 @@ using namespace std;
                 state.temp->disable();
               }
                   
+=======
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
               bool out;
               out = (state.newTag ? 1: 0);
               get_messages<typename defs::dataOut>(bags).push_back(out);
@@ -166,8 +202,11 @@ using namespace std;
             // time_advance function
             TIME time_advance() const {
               // not needed ?
+<<<<<<< HEAD
               if(state.flag == 1)
                 return fastToggleTime;
+=======
+>>>>>>> bc0dd21ca760d30603ed86af1c075824e762a055
               return slowToggleTime;
 
             }
