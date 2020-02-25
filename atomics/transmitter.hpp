@@ -52,12 +52,6 @@ using namespace std;
               state.newTag = false;
               state.isCard = false;
               state.flag = 0;
-
-            // default constructor
-            transmitter(PinName s, PinName t, PinName q, PinName w, PinName r, PinName a) {
-              slowToggleTime  = TIME("00:00:50:00");
-              state.temp = new nRF24L01P(s,t,q,w,r,a);
-              state.newTag = false;
             }
 
             // state definition
@@ -65,7 +59,6 @@ using namespace std;
               char s[32] =  " Car 1  says hi ";
               nRF24L01P* temp;
               bool newTag;
-
               bool isCard;
               int flag;
             };
@@ -101,13 +94,6 @@ using namespace std;
                 
               
 
-              printf( "every other run");
-              if (t = 0 ){
-                state.temp->powerUp(); // power up antenna
-                t= t+1 ;
-                printf( "Firstrun");
-              }
-
 
 
 
@@ -131,30 +117,17 @@ using namespace std;
                 if(x == 0 )
                   break;
 
-
                 state.newTag = true;
                 state.flag = 1;
-
-
                 if(x == 123)
                   state.s[0] = '1';
                 else
                   state.s[0] = '0';
 
-
                 printf("newtag: %d\n", state.newTag );
                 printf("flag:  %d\n", state.flag );  
 
                 
-
-                state.temp->setTransferSize(32);
-                state.temp->setTransmitMode();
-                state.temp->enable(); // enable ce pin
-                state.temp->write(1, state.s,32); // writing hello world
-	              printf("%i \n",sizeof(state.s));
-                printf( "Sending data:%s \n",state.s);
-                state.temp->disable();
-
               }
 
               
@@ -169,7 +142,6 @@ using namespace std;
             // output function
             typename make_message_bags<output_ports>::type output() const {
               typename make_message_bags<output_ports>::type bags;
-
               printf("newTAg in msg: %d\n", state.newTag );
 
               if(state.newTag == 1)
@@ -183,6 +155,7 @@ using namespace std;
                 printf( "Sending data:%s \n",state.s);
                 state.temp->disable();
               }
+                  
               bool out;
               out = (state.newTag ? 1: 0);
               get_messages<typename defs::dataOut>(bags).push_back(out);
@@ -193,7 +166,6 @@ using namespace std;
             // time_advance function
             TIME time_advance() const {
               // not needed ?
-
               if(state.flag == 1)
                 return fastToggleTime;
               return slowToggleTime;
